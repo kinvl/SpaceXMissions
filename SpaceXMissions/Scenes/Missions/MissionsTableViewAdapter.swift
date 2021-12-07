@@ -28,7 +28,7 @@ class MissionsTableViewAdapter: TableAdapterType {
         cell.initializeCell(item)
         
         cell.buttonCallback = { [weak self] URLString in
-            self?.delegate?.openWebsite(URLString: URLString)
+            self?.delegate?.cellWebsiteButtonTapped(withURLString: URLString)
         }
         
         return cell

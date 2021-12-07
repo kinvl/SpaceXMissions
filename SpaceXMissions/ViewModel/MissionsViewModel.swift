@@ -6,13 +6,12 @@
 //
 
 import Foundation
-import UIKit
 
 protocol ViewModel {
     init(withManager manager: Networkable)
 }
 
-class MissionsViewModel: ViewModel, MissionTableViewAdapterDelegate {
+class MissionsViewModel: ViewModel {
     
     var manager: Networkable
     
@@ -23,7 +22,6 @@ class MissionsViewModel: ViewModel, MissionTableViewAdapterDelegate {
     lazy var adapter: MissionsTableViewAdapter = {
         let items = missionsData.map { $0.makeDisplayableMission() }
         let adapter = MissionsTableViewAdapter(items: items)
-        adapter.delegate = self
         return adapter
     }()
     
@@ -31,11 +29,17 @@ class MissionsViewModel: ViewModel, MissionTableViewAdapterDelegate {
         self.manager = manager
     }
     
-    func openWebsite(URLString: String?) {
-        guard let URLString = URLString else { return }
-        let URL = URL(string: URLString)!
+    func setAdapterDelegate(to delegate: MissionTableViewAdapterDelegate) {
+        self.adapter.delegate = delegate
+    }
+    
+    func websiteURLFrom(URLString: String?, completion: ((URL?, Error?) -> ())) {
+        guard let URLString = URLString else {
+            completion(nil, URLError.URLEmpty)
+            return }
         
-        UIApplication.shared.open(URL)
+        let URL = URL(string: URLString)!
+        completion(URL, nil)
     }
     
     func fetchMissions(completion: @escaping (Error?) -> ()) {
@@ -43,5 +47,16 @@ class MissionsViewModel: ViewModel, MissionTableViewAdapterDelegate {
             self.missionsData = missions ?? []
             completion(error)
         })
+    }
+}
+
+enum URLError: Error, LocalizedError {
+    case URLEmpty
+    
+    public var errorDescription: String? {
+        switch self {
+        case .URLEmpty:
+            return NSLocalizedString("Website URL is empty.", comment: "URL empty")
+        }
     }
 }

@@ -27,6 +27,12 @@ class MissionsViewModelTests: XCTestCase {
         super.tearDown()
     }
     
+    func testCreateURLFromString() {
+        viewModel.websiteURLFrom(URLString: "mock") { url in
+            XCTAssertEqual(url, URL(string: "mock"))
+        }
+    }
+    
     func testFetchMissions() {
         viewModel.fetchMissions { error in
             XCTAssertNil(error)

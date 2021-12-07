@@ -9,5 +9,5 @@ import Foundation
 
 protocol MissionTableViewAdapterDelegate {
     
-    func openWebsite(URLString: String?)
+    func cellWebsiteButtonTapped(withURLString URLString: String?)
 }
