@@ -28,8 +28,9 @@ class MissionsViewModelTests: XCTestCase {
     }
     
     func testCreateURLFromString() {
-        viewModel.websiteURLFrom(URLString: "mock") { url in
+        viewModel.websiteURLFrom(URLString: "mock") { url, error in
             XCTAssertEqual(url, URL(string: "mock"))
+            XCTAssertNil(error)
         }
     }
     

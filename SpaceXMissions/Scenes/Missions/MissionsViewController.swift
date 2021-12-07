@@ -33,9 +33,11 @@ class MissionsViewController: BaseViewController<MissionsView>, MissionTableView
     }
     
     func cellWebsiteButtonTapped(withURLString URLString: String?) {
-        viewModel.websiteURLFrom(URLString: URLString) { [weak self] URL, error  in
+        viewModel.websiteURLFrom(URLString: URLString) { [weak self] URL, error in
+            guard let self = self else { return }
+            
             if let error = error {
-                self?.presentErrorAlert(error: error)
+                self.presentErrorAlert(error: error)
             } else if let URL = URL {
                 UIApplication.shared.open(URL)
             }
